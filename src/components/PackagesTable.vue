@@ -1,39 +1,75 @@
 <template>
-  <v-data-table
-    calculate-widths
-    class="vueti-table"
-    :headers="headers"
-    :items="items"
-    :items-per-page="options.size"
-    :loading="loading"
-    :page="options.page"
-    :server-items-length="total"
-    @update:items-per-page="updPerPage"
-    @update:page="updPage">
-    <template #progress>
-      <v-progress-linear
-        v-if="loading"
-        color="deep-purple"
-        indeterminate/>
-    </template>
-  </v-data-table>
+  <div class="packages-table d-flex justify-center pa-5">
+    <v-data-table
+      v-if="items.length || loading"
+      calculate-widths
+      class="packages-table__table rounded-lg"
+      :footer-props="footerProps"
+      :headers="headers"
+      :items="items"
+      :items-per-page="options.size"
+      :loading="loading"
+      :page="options.page"
+      :server-items-length="total"
+      @click:row="openDialog"
+      @update:items-per-page="updPerPage"
+      @update:page="updPage">
+      <template #progress>
+        <v-progress-linear
+          v-if="loading"
+          color="deep-purple"
+          indeterminate/>
+      </template>
+      <template #[`item.owner`]="{ item }">
+        <a 
+          class="text-decoration-none black--text d-flex align-center"
+          :href="item.owner.link"
+          target="_blank">
+          <img 
+            class="mr-2"
+            :src="item.owner.avatar"
+            :width="25">
+          {{ item.owner.name }}
+        </a>
+      </template>
+    </v-data-table>
+    <v-banner 
+      v-else
+      class="packages-table__empty white pa-6 rounded-lg"
+      elevation="6"
+      outlined>
+      {{ options.text.length ? "Sorry, we couldn't find anything for your query. Try refining your search." : 'Start entering text to search' }}
+    </v-banner>
+    
+    <package-dialog :open.sync="openedPackage"/>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
+import PackageDialog from '@/components/PackageDialog'
+
 export default {
   name: 'packages-table',
+  components: {
+    PackageDialog
+  },
   data: () => ({
     headers: [
-      {text: 'name', value: 'package.name', sortable: false},
-      {text: 'description', value: 'package.description', sortable: false},
-      {text: 'author', value: 'package.author.name', sortable: false},
-      {text: 'date', value: 'package.date', sortable: false},
-      {text: 'repository', value: 'package.links.repository', sortable: false},
+      {text: 'Name', value: 'name', width: '20%', sortable: false},
+      {text: 'version', value: 'version', width: '10%', sortable: false},
+      {text: 'Author', value: 'owner', width: '10%', sortable: false},
+      {text: 'Description', value: 'description', width: '40%', sortable: false},
     ],
-    // page: 1
+    footerProps: {
+      'items-per-page-options': [5, 10, 25, 50, 100]
+    },
+    openedPackage: false,
   }),
+  created() {
+    this.searchPackages({})
+  },
   computed: {
     ...mapGetters({
       items: 'getPackages',
@@ -41,38 +77,44 @@ export default {
       options: 'getPackagesSearchInfo',
       loading: 'getLoading',
     }),
-    // perPage: {
-    //   get() {
-    //     return this.options.from
-    //   },
-    //   set(val) {
-    //     this.$store.commit('setPerPage', val)
-    //   }
-    // }
   },
   methods: {
     ...mapActions([
-      'searchPackages'
+      'searchPackages',
+      'openPackage'
     ]),
     updPage(page) {
-
-      console.log(page, 'page')
       this.searchPackages({page})
     },
     updPerPage(perPage) {
-
-      console.log(perPage, 'perPage')
       this.searchPackages({size: perPage})
     },
-    pagination({ page,  itemsPerPage}) {
-      debugger
-      console.log( {from: page, size: itemsPerPage}, 'pagination')
-      this.searchPackages({from: page, size: itemsPerPage})
+    openDialog(row) {
+      this.openedPackage = true
+      this.openPackage(row)
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.packages-table {
+  & &__empty {
+    width: 60vw;
+  }
+  & &__table {
+    width: 95vw;
+    ::v-deep {
+      tr {
+        cursor: pointer;
+      }
+    }
+  }
+}
 
+@media(max-width: 576px) {
+	.packages-table .packages-table__empty {
+		width: 95%;
+	}
+}
 </style>

@@ -1,11 +1,12 @@
 <template>
   <v-text-field
     v-model="text"
-    class="packages-search mx-auto"
+    class="packages-search"
     color="deep-purple"
     :disabled="loading"
+    elevation="6"
     hide-details
-    label="search"
+    label="search npm packages"
     :loading="loading"
     solo
     @input="debouncedSearch">
@@ -52,7 +53,6 @@ export default {
       }
       if (this.oldText !== text) {
         this.oldText = text
-        console.log( text, 'search')
         this.searchPackages({text})
       }
     },
@@ -62,12 +62,14 @@ export default {
 
 <style lang="scss" scoped>
 .packages-search {
-  max-width: 60%;
+  width: 60vw;
+  max-width: 60vw;
   
 }
 @media(max-width:576px) {
 	.packages-search {
-		max-width: 100%;
+		width: calc(100vw - 40px);
+		max-width: calc(100vw - 40px);
 	}
 }
 </style>

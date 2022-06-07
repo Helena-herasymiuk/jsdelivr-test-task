@@ -14,14 +14,14 @@ export default new Vuex.Store({
       size: 10, 
       page: 1
     },
-    loading: false
-    // packagesPage: 1
+    loading: false,
+    openPackageInfo: {}
 
   },
   mutations: {
     setPackages(state, payload) {
-      state.packages = Vue.prototype.$_.cloneDeep( payload.objects )
-      state.packagesTotal = Vue.prototype.$_.cloneDeep( payload.total )
+      state.packages = Vue.prototype.$_.cloneDeep( payload.hits )
+      state.packagesTotal = Vue.prototype.$_.cloneDeep( payload.nbHits )
     },
     setPackagesSearchInfo(state, payload) {
       let obj = {}
@@ -30,15 +30,20 @@ export default new Vuex.Store({
       }
       state.packagesSearchInfo = Object.assign(state.packagesSearchInfo, payload, obj)
     },
+
     startLoading(state) {
       state.loading = true
     },
     finishLoading(state) {
       state.loading = false
+    },
+
+    openPackage(state, payload) {
+      state.openPackageInfo = Object.assign(state.openPackageInfo, payload)
+    },
+    closePackage(state) {
+      state.openPackageInfo = {}
     }
-    // setPerPage(state, payload) {
-    //   state.packagesPerPage = payload
-    // }
   },
   getters: {
     getPackages(state) {
@@ -52,25 +57,32 @@ export default new Vuex.Store({
     },
     getLoading(state) {
       return state.loading
+    },
+    getOpendPackage(state) {
+      return state.openPackageInfo
     }
-    // getPage(state) {
-    //   return state.packagesPage
-    // },
   },
   actions: {
-    async searchPackages({commit, getters, state}, payload) {
+    async searchPackages({commit, getters}, payload) {
       commit('setPackagesSearchInfo', payload)
       commit('startLoading')
 
-      let info = getters.getPackagesSearchInfo,
-        from = (info.page - 1) * info.size
-      console.log( info, 'searchPackages', state)
-      return await api.searchPackages({...info, from})
+      let info = getters.getPackagesSearchInfo
+      
+      return await api.searchPackages({...info, page: info.page - 1})
         .then(response => {
           commit('setPackages', response)
           
         })
         .finally(() => commit('finishLoading') )
+    },
+    async openPackage({commit}, payload) {
+      
+      commit('openPackage', {search: payload})
+      return await api.getPackageInfo(payload)
+        .then(response => {
+          commit('openPackage', {package: response})
+        })
     }
   },
   modules: {
