@@ -1,0 +1,41 @@
+html,
+div,
+ul,
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: rgba($color: #000000, $alpha: 0.5) transparent;
+  ::-webkit-scrollbar{
+    z-index:11;
+    cursor: pointer;
+  }
+  ::-webkit-scrollbar:horizontal,
+  ::-webkit-scrollbar:vertical{
+    cursor: pointer;
+  }
+  ::-webkit-scrollbar-thumb{
+    cursor: pointer;
+    background: rgba($color: #000000, $alpha: 0.3)
+  }
+  ::-webkit-scrollbar-corner,
+  ::-webkit-scrollbar-track{
+    background: transparent
+  }
+  ::-webkit-scrollbar-track
+  ::-webkit-scrollbar-track-piece{
+    background: transparent;
+  }}
+
+html{
+  overflow-y: auto;
+  scrollbar-width: 4px;
+  &::-webkit-scrollbar{
+    width: 4px;
+    height: 4px;
+  }
+  &::-webkit-scrollbar:horizontal{
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 4px;
+  }
+}
