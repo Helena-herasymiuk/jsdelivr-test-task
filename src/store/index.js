@@ -30,7 +30,6 @@ export default new Vuex.Store({
       }
       state.packagesSearchInfo = Object.assign(state.packagesSearchInfo, payload, obj)
     },
-
     startLoading(state) {
       state.loading = true
     },

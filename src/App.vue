@@ -56,8 +56,4 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-//.packages {
-// height: ;
-// overflow: auto;
-//}
 </style>
