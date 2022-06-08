@@ -46,7 +46,7 @@ export default {
   }),
   created() {
     // make request for default packages list
-    this.$store.dispath('searchPackages', {})
+    this.$store.dispatch('searchPackages', {})
   },
 }
 </script>
