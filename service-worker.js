@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/jsdelivr-test-task/precache-manifest.85ef92c4ad693d19dff2da8b9afc8fb8.js"
+  "/jsdelivr-test-task/precache-manifest.0d286a88f7be71951ace657ee92b358a.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "jsdelivr-test-task"});
