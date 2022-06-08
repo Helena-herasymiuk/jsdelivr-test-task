@@ -139,11 +139,14 @@ export default {
       },
       set(value) {
         if ( !value ) {
-          this.closePackage()
+          this.closePackage() // clear selected package info in store
         }
         this.$emit('update:open', value)
       }
     },
+    /**
+     * to view date 
+     */
     cratedDate() {
       return this.$moment(this.opendPackage.search.created).format('DD.MM.YYYY, HH:mm')
     }

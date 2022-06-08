@@ -22,9 +22,10 @@
       </template>
       <template #[`item.owner`]="{ item }">
         <a 
-          class="text-decoration-none black--text d-flex align-center"
+          class="black--text d-flex align-center"
           :href="item.owner.link"
-          target="_blank">
+          target="_blank"
+          @click.stop>
           <img 
             class="mr-2"
             :src="item.owner.avatar"
@@ -67,9 +68,6 @@ export default {
     },
     openedPackage: false,
   }),
-  created() {
-    this.searchPackages({})
-  },
   computed: {
     ...mapGetters({
       items: 'getPackages',
@@ -83,12 +81,21 @@ export default {
       'searchPackages',
       'openPackage'
     ]),
+    /**
+     * emit searching if changed page
+     */
     updPage(page) {
       this.searchPackages({page})
     },
+    /**
+     * emit searching if changed items count per page
+     */
     updPerPage(perPage) {
       this.searchPackages({size: perPage})
     },
+    /**
+     * open dialog with selected row & request for additional info about package
+     */
     openDialog(row) {
       this.openedPackage = true
       this.openPackage(row)

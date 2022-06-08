@@ -3,7 +3,11 @@ import axios from 'axios'
 import algoliasearch from 'algoliasearch'
 export default class PackagesApi {
   url = 'https://data.jsdelivr.com/v1/package/npm/'
-  
+  /**
+   * code from documentation https://github.com/jsdelivr/www.jsdelivr.com/blob/master/src/public/js/utils/search.js
+   * analog  - axios variant
+   * this variant selected because of more info in response than in 'https://registry.npmjs.org/-/v1/search'
+   */
   algolia = algoliasearch('OFCNCOG2CU', 'f54e21fa3a2a0160595bb058179bfb1e', { protocol: 'https:' });
   index = this.algolia.initIndex('npm-search');
 
@@ -13,7 +17,10 @@ export default class PackagesApi {
       page,
     })
   }
-
+  /**
+   * get additional info vy package name & version 
+   * return files & files count 
+   */
   async getPackageInfo(payload) {
     const uri = `${this.url}${payload.name}@${payload.version}/stats`
     

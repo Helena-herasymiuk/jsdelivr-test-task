@@ -21,11 +21,11 @@ export default new Vuex.Store({
   mutations: {
     setPackages(state, payload) {
       state.packages = Vue.prototype.$_.cloneDeep( payload.hits )
-      state.packagesTotal = Vue.prototype.$_.cloneDeep( payload.nbHits )
+      state.packagesTotal =  payload.nbHits
     },
     setPackagesSearchInfo(state, payload) {
       let obj = {}
-      if ( (payload.text || payload.size) && !payload.page) {
+      if ( (payload.text || payload.size) && !payload.page) { // start from page 1 if changed search text or page size
         obj.page = 1
       }
       state.packagesSearchInfo = Object.assign(state.packagesSearchInfo, payload, obj)
@@ -63,11 +63,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    /**
+     * search packages by text size & page
+     */
     async searchPackages({commit, getters}, payload) {
-      commit('setPackagesSearchInfo', payload)
+      commit('setPackagesSearchInfo', payload)  // update search info in store
       commit('startLoading')
 
-      let info = getters.getPackagesSearchInfo
+      let info = getters.getPackagesSearchInfo  // get updated search info
       
       return await api.searchPackages({...info, page: info.page - 1})
         .then(response => {
@@ -76,6 +79,9 @@ export default new Vuex.Store({
         })
         .finally(() => commit('finishLoading') )
     },
+    /**
+     * get addditional package info
+     */
     async openPackage({commit}, payload) {
       
       commit('openPackage', {search: payload})

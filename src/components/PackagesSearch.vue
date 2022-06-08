@@ -33,17 +33,20 @@ export default {
     debouncedSearch: () => {}
   }),
   created() {
-    this.debouncedSearch = this.$_.debounce(this.search, 1000)
+    this.debouncedSearch = this.$_.debounce(this.search, 1000) // for debouncing searching in input
   },
   computed: {
     ...mapGetters({
-      loading: 'getLoading',
+      loading: 'getLoading', // for watching loading
     }),
   },
   methods: {
     ...mapActions([
       'searchPackages'
     ]),
+    /**
+     * function that emit searching if text changed
+     */
     search(value) {
       let text
       if (!value) {

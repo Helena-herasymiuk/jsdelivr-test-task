@@ -44,6 +44,10 @@ export default {
   data: () => ({
     //
   }),
+  created() {
+    // make request for default packages list
+    this.$store.dispath('searchPackages', {})
+  },
 }
 </script>
 <style lang="scss">
