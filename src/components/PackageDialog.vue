@@ -25,7 +25,7 @@
               </v-list-item-title>
               <v-list-item-subtitle>
                 <a 
-                  class="text-decoration-none black--text d-flex align-center"
+                  class="d-flex align-center"
                   :href="opendPackage.search.owner.link"
                   target="_blank">
                   <img 
@@ -94,7 +94,7 @@
               </v-list-item-title>
               <v-list-item-subtitle>
                 <a 
-                  class="text-decoration-none grey--text d-flex align-center"
+                  class="grey--text d-flex align-center"
                   :href="opendPackage.search.repository.url"
                   target="_blank">
                   {{ opendPackage.search.repository.url }}

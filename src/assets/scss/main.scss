@@ -5,7 +5,6 @@ html{
 }
 
 html,
-// main,
 div {
   &::-webkit-scrollbar-thumb{
     background: #B3B3B3;
@@ -15,5 +14,12 @@ div {
   &::-webkit-scrollbar{
     width: 6px;
     height: 6px;
+  }
+}
+a {
+  color: black !important;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
   }
 }

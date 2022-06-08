@@ -22,7 +22,7 @@
       </template>
       <template #[`item.owner`]="{ item }">
         <a 
-          class="black--text d-flex align-center"
+          class="d-flex align-center"
           :href="item.owner.link"
           target="_blank"
           @click.stop>

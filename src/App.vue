@@ -15,9 +15,11 @@
       color="deep-purple lighten-1 white--text"
       height="60">
       <v-btn 
+        class="text-decoration-none"
         href="https://github.com/Helena-herasymiuk/jsdelivr-test-task"
         icon
-        small>
+        small
+        target="_blank">
         <v-icon color="white">
           mdi-github
         </v-icon>
